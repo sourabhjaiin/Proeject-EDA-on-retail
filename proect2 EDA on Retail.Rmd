@@ -1,0 +1,146 @@
+---
+title: 'Project2: EDA on Retail'
+author: "sourabh jain"
+date: "08/11/2020"
+output: html_document
+---
+
+
+### Loading and exploring the data 
+```{r}
+# Reading the data
+superstore<-read.csv("SampleSuperstore.csv")
+#names of column
+
+names(superstore)
+
+#structure of the data
+str(superstore)
+
+# checking if there is any missing value which is represented by NA
+colSums(is.na(superstore))
+## There are no missing values
+
+#Summary: to find statistical values for each variable
+summary(superstore)
+
+#total quantity
+sum(superstore$Quantity)
+
+#total Sale
+sum(superstore$Sales)
+
+#total Profit
+sum(superstore$Profit)
+```
+### Exploratory Data Analysis
+#### Understanding the data with tables and graphs
+
+```{r}
+#studying Ship mode
+library(ggplot2)
+table(superstore$Ship.Mode)
+ggplot(data=superstore,aes(x=Ship.Mode,fill=Ship.Mode))+geom_bar(width=0.5)
+```
+
+#### Observation 1: Maximum customer prefer Standard Class as the ship mode. 
+
+```{r}
+#Studying Segment
+table(superstore$Segment)
+ggplot(data=superstore,aes(x=Segment,fill=Segment))+geom_bar(width = 0.5)
+
+#Studying Region
+table(superstore$Region)
+ggplot(data=superstore,aes(x=Region,fill=Region))+geom_bar(width = 0.5)
+```
+
+#### Observation 2: Maximum customers are from West region and minimum are from South
+
+
+
+```{r}
+#studying category
+table(superstore$Category)
+ggplot(data=superstore,aes(x=Category,fill=Category))+geom_bar(width = 0.5)
+
+#studying categories ans sub
+table(superstore$Sub.Category,superstore$Category)
+ggplot(data=superstore,aes(x=Sub.Category,fill=Sub.Category))+geom_bar()+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+
+```
+
+
+#### Observation 3: The maximum sub categories are from Binders, paper, Furnishings and minimum are from Supplies, MAchines and Copiers
+
+```{r}
+ggplot(data=superstore,aes(x=State))+geom_bar()+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+```
+
+#### Observation 4: Highest number of buyers are from California and New YOrk.
+
+```{r}
+ggplot(data=superstore,aes(x=Quantity))+geom_bar()
+```
+
+#### Observation 5. Most people tends to buy Quantity of 2-3
+
+```{r}
+ggplot(data=superstore,aes(x=Segment,y=Sales,fill=Segment))+geom_bar(stat="identity",width = 0.5)
+```
+
+#### Observation 6. The maximum sales is in the consumer segment and minimum sales is in Home Office segment
+
+```{r}
+# profit evaluation 
+superstore1<-superstore[superstore$Profit>0,]
+ggplot(data=superstore1,aes(x=Segment,y=Profit,fill=Segment))+geom_bar(stat="identity",width=0.5)
+```
+
+#### Observation 7. The maximum profit is from Consumer Segment
+
+```{r}
+# Sales and Profit Evaluation Regionwise
+ggplot(data=superstore,aes(x=Region,y=Sales,fill=Region))+geom_bar(stat="identity",width=0.5)
+ggplot(data=superstore1,aes(x=Region,y=Profit,fill=Region))+geom_bar(stat="identity",width = 0.5)
+```
+
+#### Observation 8. The maximum sales is in West region but the maximum profit is in East region
+
+
+```{r}
+# Sales Evvaluation of Categories and Sub categories
+ggplot(data=superstore,aes(x=Category,y=Sales,fill=Category))+geom_bar(stat="identity",width=0.5)
+ggplot(data=superstore,aes(x=Sub.Category,y=Sales,fill= Sub.Category))+geom_bar(stat="identity")+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+```
+
+#### Observation 9. There has been maximum sales in Technology Category than Office Supplies and Furniture Category.
+
+#### Observation 10. There has been Maximum sale of Phones and chairs while Fasteners and Labels has the minimum sales. '
+
+```{r}
+ggplot(data=superstore1,aes(x=Category,y=Profit, fill=Category)) + geom_bar(stat="identity",width=0.5)
+ggplot(data=superstore1,aes(x=Sub.Category,y=Profit,fill= Sub.Category))+geom_bar(stat="identity")+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+```
+
+#### Observation 11. Technology and Office Supplies Category gave the maximum profit
+
+#### Observation 12. Max profit are from Blinders, Phones and Copiers while minimum profit is from fasteners and Suppliers category
+
+```{r}
+# Discount Analysis
+ggplot(data=superstore,aes(x=Category,y=Discount,fill=Category))+geom_bar(stat="identity",width=0.5)
+ggplot(data=superstore,aes(x=Sub.Category,y=Discount ,fill= Sub.Category))+geom_bar(stat="identity")+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+```
+
+#### Observation 13. Office Suplies Category was given maximum discount
+#### Observation 14. In sub Category BLinders were sold with maximum discount. 
+
+```{r}
+ggplot(data=superstore,aes(x=State,y=Sales))+geom_bar(stat="identity",width=0.5)+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+ggplot(data=superstore1,aes(x=State,y=Profit))+geom_bar(stat="identity",width=0.5)+theme(axis.text.x = element_text(angle=90,hjust = 1,vjust = 1))
+```
+
+#### Observation 15. Sales and Profit are maximum in California and New York city. 
+
+
